@@ -1,0 +1,116 @@
+#findwhereRisextractingfrom
+getwd()
+
+#install ADD package 
+install.packages('lmerTest')
+library(lmerTest)
+install.packages('emmeans')
+library(emmeans)
+if(!require(mosaic)){install.packages("mosaic")}
+library(mosaic)
+if(!require(tidyverse)){install.packages("tidyverse")}
+library(tidyverse)
+if(!require(broom)){install.packages("broom")}
+library(broom)
+install.packages('devtools')
+library(devtools)
+if(!require(drc)){install.packages("drc")}
+library(drc)
+if(!require(nlme)){install.packages("nlme")}
+library(nlme)
+if(!require(rcompanion)){install.packages("rcompanion")}
+if(!require(FSA)){install.packages("FSA")}
+if(!require(rcompanion)){install.packages("rcompanion")}
+if(!require(FSA)){install.packages("FSA")}
+if(!require(psych)){install.packages("psych")}
+library(rcompanion)
+library(FSA)
+library(psych)
+
+#if error in read, double checj WD
+setwd("C:/Users/16512/Desktop/ADD Calc")
+getwd()
+
+#readtempdatacsv,T meanslinesgrabbingaretrue
+x=read.csv('2020Tempdata/2020 TEMP DATA.csv', header=T)
+#returntopmostportionofdata
+head(x)
+#database is searched by R when evaluating a variable, so objects in database can be accessed by simply giving their names 
+attach(x)
+#AddsecondADDpackagewithbasetemps
+if(!require(pollen)){install.packages("pollen")}
+library(pollen)
+GDDMINEIGHT=gdd(tmax=MAX, tmin=MIN, tbase=-8,tbase_max=100)
+GDDMINSEVEN=gdd(tmax=MAX, tmin=MIN, tbase=-7,tbase_max=100)
+GDDMINSIX=gdd(tmax=MAX, tmin=MIN, tbase=-6,tbase_max=100)
+GDDMINFIVE=gdd(tmax=MAX, tmin=MIN, tbase=-5,tbase_max=100)
+GDDMINFOUR=gdd(tmax=MAX, tmin=MIN, tbase=-4,tbase_max=100)
+GDDMINTHREE=gdd(tmax=MAX, tmin=MIN, tbase=-3,tbase_max=100)
+GDDMINTWO=gdd(tmax=MAX, tmin=MIN, tbase=-2,tbase_max=100)
+GDDMINONE=gdd(tmax=MAX, tmin=MIN, tbase=-1,tbase_max=100)
+GDDZERO=gdd(tmax=MAX, tmin=MIN, tbase=0,tbase_max=100)
+GDDONE=gdd(tmax=MAX, tmin=MIN, tbase=1,tbase_max=100)
+GDDTWO=gdd(tmax=MAX, tmin=MIN, tbase=2,tbase_max=100)
+GDDTHREE=gdd(tmax=MAX, tmin=MIN, tbase=3,tbase_max=100)
+GDDFOUR=gdd(tmax=MAX, tmin=MIN, tbase=4,tbase_max=100)
+GDDFIVE=gdd(tmax=MAX, tmin=MIN, tbase=5,tbase_max=100)
+GDDSIX=gdd(tmax=MAX, tmin=MIN, tbase=6,tbase_max=100)
+GDDSEVEN=gdd(tmax=MAX, tmin=MIN, tbase=7,tbase_max=100)
+
+
+#findbaseof 0 value 
+
+GDDZERO
+
+#fromlow100tohigh100, create a inc by 5 sequence
+
+ADDincfive <- seq(from = 5977, to = 6177, by = 5)
+
+###functionstart###
+
+#setupfilelocation
+
+folder <- "2020Tempdata/"
+
+#createfunction
+
+ADDlogtest <- function(var, name){
+  
+  #definevariableforfunction
+  
+  TS2<- var
+  
+  ##41 different values of ADD from base 6077
+  
+  for(i in 1:41){
+    thresholdresult <- TS2> ADDincfive[i]
+    
+    #changetocharactertofind"true"
+    
+    threshchar <- as.character(thresholdresult)
+    
+    #change sequencenametoTSEQfor 
+    
+    TSEQ <- ADDincfive[i]
+    if (TRUE %in% threshchar){
+      TSEQ <- as.character(TSEQ)
+      fileA<-paste(folder, name, TSEQ, ".csv", sep="")
+      write.csv(thresholdresult, fileA)
+    }
+  }
+}
+#startfunctioncalc 
+
+{ADDlogtest(GDDMINEIGHT,"Anegeight")
+  ADDlogtest(GDDMINSEVEN,"Bnegseven")
+  ADDlogtest(GDDMINSIX,"Cnegsix")
+  ADDlogtest(GDDMINFIVE,"Dnegfive")
+  ADDlogtest(GDDMINFOUR,"Enegfour")
+  ADDlogtest(GDDMINTHREE,"Fnegthree")
+  ADDlogtest(GDDMINTWO,"Gnegtwo")
+  ADDlogtest(GDDMINONE,"Hnegoone")
+  ADDlogtest(GDDZERO,"Izero")
+  ADDlogtest(GDDONE,"Jone")
+  ADDlogtest(GDDTWO,"Ktwo")
+  ADDlogtest(GDDTHREE,"Lthree")
+  ADDlogtest(GDDFOUR,"Mfour")}
