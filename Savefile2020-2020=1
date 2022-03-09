@@ -1,3 +1,4 @@
+
 #findwhereRisextractingfrom
 getwd()
 
@@ -40,6 +41,13 @@ attach(x)
 #AddsecondADDpackagewithbasetemps
 if(!require(pollen)){install.packages("pollen")}
 library(pollen)
+
+#MINTEMPOF-11.7FORYEAR
+
+GDDMINTWELVE=gdd(tmax=MAX, tmin=MIN, tbase=-12,tbase_max=100)
+GDDMINELEVEN=gdd(tmax=MAX, tmin=MIN, tbase=-11,tbase_max=100)
+GDDMINTEN=gdd(tmax=MAX, tmin=MIN, tbase=-10,tbase_max=100)
+GDDMINNINE=gdd(tmax=MAX, tmin=MIN, tbase=-9,tbase_max=100)
 GDDMINEIGHT=gdd(tmax=MAX, tmin=MIN, tbase=-8,tbase_max=100)
 GDDMINSEVEN=gdd(tmax=MAX, tmin=MIN, tbase=-7,tbase_max=100)
 GDDMINSIX=gdd(tmax=MAX, tmin=MIN, tbase=-6,tbase_max=100)
@@ -64,7 +72,7 @@ GDDZERO
 
 #fromlow100tohigh100, create a inc by 5 sequence
 
-ADDincfive <- seq(from = 5977, to = 6177, by = 5)
+ADDincfive <- seq(from = 6356, to= 6556, by = 5)
 
 ###functionstart###
 
@@ -80,7 +88,7 @@ ADDlogtest <- function(var, name){
   
   TS2<- var
   
-  ##41 different values of ADD from base 6077
+  ##41 different values of ADD from base 6456
   
   for(i in 1:41){
     thresholdresult <- TS2> ADDincfive[i]
@@ -94,23 +102,27 @@ ADDlogtest <- function(var, name){
     TSEQ <- ADDincfive[i]
     if (TRUE %in% threshchar){
       TSEQ <- as.character(TSEQ)
-      fileA<-paste(folder, name, TSEQ, ".csv", sep="")
-      write.csv(thresholdresult, fileA)
+      fileB<-paste(folder, name, TSEQ, ".csv", sep="")
+      write.csv(thresholdresult, fileB)
     }
   }
 }
 #startfunctioncalc 
 
-{ADDlogtest(GDDMINEIGHT,"Anegeight")
-  ADDlogtest(GDDMINSEVEN,"Bnegseven")
-  ADDlogtest(GDDMINSIX,"Cnegsix")
-  ADDlogtest(GDDMINFIVE,"Dnegfive")
-  ADDlogtest(GDDMINFOUR,"Enegfour")
-  ADDlogtest(GDDMINTHREE,"Fnegthree")
-  ADDlogtest(GDDMINTWO,"Gnegtwo")
-  ADDlogtest(GDDMINONE,"Hnegoone")
-  ADDlogtest(GDDZERO,"Izero")
-  ADDlogtest(GDDONE,"Jone")
-  ADDlogtest(GDDTWO,"Ktwo")
-  ADDlogtest(GDDTHREE,"Lthree")
-  ADDlogtest(GDDFOUR,"Mfour")}
+{ ADDlogtest(GDDMINTWELVE, "ANEGTWELVE")
+  ADDlogtest(GDDMINELEVEN, "BNEGELEVEN")
+  ADDlogtest(GDDMINTEN, "CNEGTEN")
+  ADDlogtest(GDDMINNINE, "DNEGNINE")
+  ADDlogtest(GDDMINEIGHT, "ENEGEIGHT")
+  ADDlogtest(GDDMINSEVEN,"FNEGSEVEN")
+  ADDlogtest(GDDMINSIX,"GNEGSIX")
+  ADDlogtest(GDDMINFIVE,"HNEGFIVE")
+  ADDlogtest(GDDMINFOUR,"INEGFOUR")
+  ADDlogtest(GDDMINTHREE,"JNEGTHREE")
+  ADDlogtest(GDDMINTWO,"KNEGTWO")
+  ADDlogtest(GDDMINONE,"LNEGONE")
+  ADDlogtest(GDDZERO,"MNEGZERO")
+  ADDlogtest(GDDONE,"NONE")
+  ADDlogtest(GDDTWO,"OTWO")
+  ADDlogtest(GDDTHREE,"PTHREE")
+  ADDlogtest(GDDFOUR,"QFOUR")}
