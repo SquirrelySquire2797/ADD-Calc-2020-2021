@@ -169,4 +169,20 @@ attach(y2)
   nagelkerke(LOGADD)}
 
 ##look at nagelkerke and p value 
+##create matrix for new threshold 
+
+
+gddzero4 <-Matrix(GDDMINFIVE , nrow = 365, ncol= 1)
+
+
+##make vector for specific calender days 
+ADDlin4<- c(31, 61, 92, 122, 153, 184, 214, 245, 275, 306, 337, 365)
+
+###makeemptyvector
+Calcum2020resultNEW<- c()
+
+##return ADD values of calender 
+for(i in 1:12){
+  L4<- ADDlin4[i]
+  Calcum2020resultNEW<- print( gddzero4 [L4,])}
 
