@@ -28,7 +28,7 @@ library(rcompanion)
 library(FSA)
 library(psych)
 
-#if error in read, double checj WD
+#if error in read, double checK
 setwd("C:/Users/16512/Desktop/ADD Calc")
 getwd()
 
@@ -44,7 +44,7 @@ library(pollen)
 
 #MINTEMPOF-11.7FORYEAR
 
-GDDMINTWELVE=gdd(tmax=MAX, tmin=MIN, tbase=-12,tbase_max=100)
+GDDMINTWELVEgdd(tmax=MAX, tmin=MIN, tbase=-12,tbase_max=100)
 GDDMINELEVEN=gdd(tmax=MAX, tmin=MIN, tbase=-11,tbase_max=100)
 GDDMINTEN=gdd(tmax=MAX, tmin=MIN, tbase=-10,tbase_max=100)
 GDDMINNINE=gdd(tmax=MAX, tmin=MIN, tbase=-9,tbase_max=100)
@@ -68,11 +68,12 @@ GDDSEVEN=gdd(tmax=MAX, tmin=MIN, tbase=7,tbase_max=100)
 
 #findbaseof 0 value 
 
+
 GDDZERO
 
 #fromlow100tohigh100, create a inc by 5 sequence
 
-ADDincfive <- seq(from = 6356, to= 6556, by = 5)
+ADDincfive <- seq(from = 6364, to= 6564, by = 5)
 
 ###functionstart###
 
@@ -88,7 +89,7 @@ ADDlogtest <- function(var, name){
   
   TS2<- var
   
-  ##41 different values of ADD from base 6456
+  ##41 different values of ADD from base 6517
   
   for(i in 1:41){
     thresholdresult <- TS2> ADDincfive[i]
@@ -121,22 +122,20 @@ ADDlogtest <- function(var, name){
   ADDlogtest(GDDMINTHREE,"JNEGTHREE")
   ADDlogtest(GDDMINTWO,"KNEGTWO")
   ADDlogtest(GDDMINONE,"LNEGONE")
-  ADDlogtest(GDDZERO,"MNEGZERO")
+  ADDlogtest(GDDZERO,"MZERO")
   ADDlogtest(GDDONE,"NONE")
   ADDlogtest(GDDTWO,"OTWO")
   ADDlogtest(GDDTHREE,"PTHREE")
   ADDlogtest(GDDFOUR,"QFOUR")}
-  
-   
 
 
 ##startlinearregression 
 
-gddzero2 <- Matrix(GDDZERO, nrow = 365, ncol= 1)
+gddzero2 <- Matrix(GDDZERO, nrow = 366, ncol= 1)
 
 
 ##make vector for specific calender days 
-ADDlin2 <- c(31, 61, 92, 122, 153, 184, 214, 245, 275, 306, 337, 365)
+ADDlin2 <- c(32, 62, 93, 123, 154, 185, 215, 246, 276, 307, 338, 366)
 
 ###makeemptyvector
 Calcum2020result <- c()
@@ -151,6 +150,8 @@ for(i in 1:12){
 y2=read.csv('2020Tempdata/DD 2020-2021.csv', header=TRUE)
 
 ##check everything is there
+
+
 View(y2)
 
 ##download regression packages 
@@ -169,14 +170,15 @@ attach(y2)
   nagelkerke(LOGADD)}
 
 ##look at nagelkerke and p value 
+
 ##create matrix for new threshold 
 
 
-gddzero4 <-Matrix(GDDMINFIVE , nrow = 365, ncol= 1)
+gddzero4 <-Matrix(GDDMINFIVE , nrow = 366, ncol= 1)
 
 
 ##make vector for specific calender days 
-ADDlin4<- c(31, 61, 92, 122, 153, 184, 214, 245, 275, 306, 337, 365)
+ADDlin4<- c(32, 62, 93, 123, 154, 185, 215, 246, 276, 307, 338, 366)
 
 ###makeemptyvector
 Calcum2020resultNEW<- c()
@@ -186,3 +188,37 @@ for(i in 1:12){
   L4<- ADDlin4[i]
   Calcum2020resultNEW<- print( gddzero4 [L4,])}
 
+##createfigures
+
+z2=read.csv('2020Tempdata/DD Reg 2020.csv', header=TRUE)
+
+
+head(z2)
+attach(z2)
+
+LOGADD$coef
+ADDb0=LOGADD$coef[1]
+ADDx1=LOGADD$coef[2]
+ADDrange=seq(from=0, to=8000, by=250)
+ADDrange
+a_logit=ADDb0+ADDx1*ADDrange
+a_logit
+a_prob=exp(a_logit)/(1+exp(a_logit))
+a_prob
+plot(ADD, PROP, xlab="Accumulated Degree Days", ylab="Peak Biomass Proportion", xlim=c(0,8000), ylim = c(0,1))
+
+
+lines(ADDrange,a_prob)
+
+#homlim. good fit 
+
+attach(y2)
+if(!require(modEvA)){install.packages("modEvA")}
+library(modEvA)
+HLfit(LOGADD, bin.method="prob.bins")
+
+
+##spearman and tau tests
+
+cor.test(CODE, ADD, method="spearman")
+cor.test(CODE, ADD, method="kendall")
